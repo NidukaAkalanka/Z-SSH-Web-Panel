@@ -28,3 +28,7 @@ def index():
     else:
         # Render the HTML template without a message
         return render_template('index.html')
+
+def display_openssh_ssl_port():
+    old_op_ssl = subprocess.check_output("grep 'accept =' /etc/stunnel/stunnel.conf | sed ':a;N;$!ba;s/\\n/ /g' | sed 's/accept =//g' | awk '{print$2}'", shell=True).decode().strip()
+    return render_template('index.html', old_op_ssl=old_op_ssl)
