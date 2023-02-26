@@ -9,7 +9,7 @@ def index():
         # Get the user inputs from the form
         username = request.form['username']
         password = request.form['password']
-        exd = request.form['exd']
+        number = request.form['number']
         
         # Construct the command to execute the shell script with sudo
         command = f"sudo /path/to/your/script.sh {username} {password} {number}"
