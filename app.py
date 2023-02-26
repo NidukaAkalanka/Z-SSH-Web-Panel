@@ -3,25 +3,28 @@ from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    username = request.form['username']
-    password = request.form['password']
-    nod = request.form['nod']
-
-    # Run the shell script using sudo and pass in the user inputs as arguments
-    result = subprocess.run(['sudo', '/path/to/shell/script.sh', username, password, nod])
-
-    if result.returncode == 1:
-        # Script returned success, show success message
-        return render_template('success.html')
+    if request.method == 'POST':
+        # Get the user inputs from the form
+        username = request.form['username']
+        password = request.form['password']
+        number = request.form['number']
+        
+        # Construct the command to execute the shell script with sudo
+        command = f"sudo /path/to/your/script.sh {username} {password} {number}"
+        
+        # Execute the command and get the return code
+        return_code = subprocess.call(command, shell=True)
+        
+        # Return a success message if the script returns code 0, else return an error message
+        if return_code == 0:
+            message = "Script executed successfully!"
+        else:
+            message = "Error executing script!"
+        
+        # Render the HTML template with the message
+        return render_template('index.html', message=message)
     else:
-        # Script returned an error, show error message
-        return render_template('error.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        # Render the HTML template without a message
+        return render_template('index.html')
