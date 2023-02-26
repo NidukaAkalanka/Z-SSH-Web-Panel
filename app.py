@@ -12,7 +12,7 @@ def index():
         number = request.form['number']
         
         # Construct the command to execute the shell script with sudo
-        command = f"sudo /path/to/your/script.sh {username} {password} {number}"
+        command = f"sudo ./etc/rezoth-ssh/UserManager.sh {username} {password} {number}"
         
         # Execute the command and get the return code
         return_code = subprocess.call(command, shell=True)
